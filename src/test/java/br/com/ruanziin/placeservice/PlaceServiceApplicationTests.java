@@ -14,18 +14,21 @@ class PlaceServiceApplicationTests {
 
 	@Test
 	public void testCreatedPlaceSucess(){
-		var name = "Valid Name";
-		var state = "Valid State";
-		var slug = "valid-name";
+		final String name = "Valid Name";
+		final String city = "Valid City";
+		final String state = "Valid State";
+		final String slug = "valid-name";
 
 		webTestClient
 				.post()
 				.uri("/places")
 				.bodyValue(
-						new PlaceRequest(name, state))
+						new PlaceRequest(name, city, state))
 				.exchange()
+				.expectStatus().isCreated()
 				.expectBody()
 				.jsonPath("name").isEqualTo(name)
+				.jsonPath("city").isEqualTo(city)
 				.jsonPath("state").isEqualTo(state)
 				.jsonPath("slug").isEqualTo(slug)
 				.jsonPath("createdAt").isNotEmpty()
@@ -34,14 +37,15 @@ class PlaceServiceApplicationTests {
 
 	@Test
 	public void testCreatedPlaceFailure(){
-		var name = "";
-		var state = "";
+		final String name = "";
+		final String city = "";
+		final String state = "";
 
 		webTestClient
 				.post()
 				.uri("/places")
 				.bodyValue(
-						new PlaceRequest(name, state))
+						new PlaceRequest(name, city, state))
 				.exchange()
 				.expectStatus().isBadRequest();
 	}
