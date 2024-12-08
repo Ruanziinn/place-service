@@ -41,4 +41,10 @@ public class PlaceController {
     public Flux<PlaceResponse> list(@RequestParam(required = false) String name) {
         return placeService.list(name).map(PlaceMapper::toResponse);
     }
+
+    @DeleteMapping("{id}")
+    public Mono<Void> delete(@PathVariable("id") Long id) {
+        return placeService.delete(id);
+    }
+
 }

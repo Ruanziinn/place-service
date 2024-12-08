@@ -40,4 +40,10 @@ public class PlaceService {
         Example<Place> query = QueryBuilder.makeQuery(place);
         return placeRepository.findAll(query, Sort.by("name").ascending());
     }
+
+    public Mono<Void> delete(Long id) {
+        return placeRepository.findById(id)
+                .flatMap(place -> placeRepository.delete(place));
+    }
+
 }
